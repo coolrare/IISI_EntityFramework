@@ -15,10 +15,7 @@ namespace IISIConsole
             {
                 //db.Configuration.LazyLoadingEnabled = false;
 
-                //db.Database.Log = (string msg) =>
-                //{
-                //    Console.WriteLine(msg);
-                //};
+                db.Database.Log = Console.WriteLine;
 
                 var d = new Department()
                 {
