@@ -1,6 +1,7 @@
 ﻿using IISIConsole.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,20 +18,34 @@ namespace IISIConsole
                 //db.Configuration.LazyLoadingEnabled = false;
                 //db.Configuration.ProxyCreationEnabled = false;
 
-                //db.Database.Log = Console.WriteLine;
+                db.Database.Log = Console.WriteLine;
 
-                var c = db.Course.Find(2);
-                var p = db.Person.Find(3);
-                //p = new Person() { FirstName = "Will", LastName = "Huang", HireDate = DateTime.Now, Discriminator = "OK" };
-                c.Person.Add(p);
+                var one = db.Course.Find(2);
+                Console.WriteLine(db.Entry(one).State);
+
+                one.Credits++;
+                Console.WriteLine(db.Entry(one).State);
+
+                db.Entry(one).State = EntityState.Added;
+
                 db.SaveChanges();
 
+                //DemoManyToMany(db);
                 //DemoQueryCount(db);
                 //DemoInsert(db);
                 //DemoUpdate(db);
                 //DemoDelete(db);
                 //DemoQuery(db);
             }
+        }
+
+        private static void DemoManyToMany(ContosoUniversityEntities db)
+        {
+            var c = db.Course.Find(2);
+            var p = db.Person.Find(3);
+            //p = new Person() { FirstName = "Will", LastName = "Huang", HireDate = DateTime.Now, Discriminator = "OK" };
+            c.Person.Add(p);
+            db.SaveChanges();
         }
 
         private static void DemoQueryCount(ContosoUniversityEntities db)
