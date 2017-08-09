@@ -22,10 +22,11 @@ namespace IISIConsole.Models
     
         public int DepartmentID { get; set; }
         public string Name { get; set; }
-        public decimal Budget { get; set; }
         public System.DateTime StartDate { get; set; }
         public Nullable<int> InstructorID { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsDeleted { get; set; }
+        public decimal Budget { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Course { get; set; }
