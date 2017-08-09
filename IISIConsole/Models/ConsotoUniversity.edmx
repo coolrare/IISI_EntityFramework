@@ -36,6 +36,8 @@
           <Property Name="InstructorID" Type="int" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Enrollment">
           <Key>
@@ -226,6 +228,8 @@
           <NavigationProperty Name="Person" Relationship="Self.FK_dbo_Department_dbo_Instructor_InstructorID" FromRole="Department" ToRole="Person" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="Budget" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Enrollment">
           <Key>
@@ -384,6 +388,8 @@
           <EntitySetMapping Name="Department">
             <EntityTypeMapping TypeName="ContosoUniversityModel.Department">
               <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="Budget" ColumnName="Budget" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />

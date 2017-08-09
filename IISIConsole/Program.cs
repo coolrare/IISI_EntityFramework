@@ -20,23 +20,29 @@ namespace IISIConsole
 
                 db.Database.Log = Console.WriteLine;
 
-                var one = db.Course.Find(2);
-                Console.WriteLine(db.Entry(one).State);
 
-                one.Credits++;
-                Console.WriteLine(db.Entry(one).State);
 
-                db.Entry(one).State = EntityState.Added;
-
-                db.SaveChanges();
-
+                //DemoEntityState(db);
                 //DemoManyToMany(db);
                 //DemoQueryCount(db);
-                //DemoInsert(db);
+                DemoInsert(db);
                 //DemoUpdate(db);
                 //DemoDelete(db);
                 //DemoQuery(db);
             }
+        }
+
+        private static void DemoEntityState(ContosoUniversityEntities db)
+        {
+            var one = db.Course.Find(2);
+            Console.WriteLine(db.Entry(one).State);
+
+            one.Credits++;
+            Console.WriteLine(db.Entry(one).State);
+
+            db.Entry(one).State = EntityState.Added;
+
+            db.SaveChanges();
         }
 
         private static void DemoManyToMany(ContosoUniversityEntities db)
@@ -69,6 +75,9 @@ namespace IISIConsole
         {
             var d1 = db.Department.Find(1);
             d1.Budget = d1.Budget + 1;
+
+            d1.ModifiedOn = DateTime.Now;
+
             db.SaveChanges();
         }
 
@@ -79,7 +88,8 @@ namespace IISIConsole
                 DepartmentID = 0,
                 Name = "My Dept",
                 Budget = 100,
-                StartDate = DateTime.Now
+                StartDate = DateTime.Now,
+                ModifiedOn = DateTime.Now
             };
 
             db.Department.Add(d);
