@@ -18,18 +18,25 @@ namespace IISIConsole
                 //db.Configuration.LazyLoadingEnabled = false;
                 //db.Configuration.ProxyCreationEnabled = false;
 
-                db.Database.Log = Console.WriteLine;
+                //db.Database.Log = Console.WriteLine;
 
+                var one = db.Course.Find(2);
 
+                one.Title += "1";
+                //one.DateModified = DateTime.Now;
 
-                //DemoEntityState(db);
-                //DemoManyToMany(db);
-                //DemoQueryCount(db);
-                DemoInsert(db);
-                //DemoUpdate(db);
-                //DemoDelete(db);
-                //DemoQuery(db);
+                db.SaveChanges();
             }
+
+
+
+            //DemoEntityState(db);
+            //DemoManyToMany(db);
+            //DemoQueryCount(db);
+            //DemoInsert(db);
+            //DemoUpdate(db);
+            //DemoDelete(db);
+            //DemoQuery(db);
         }
 
         private static void DemoEntityState(ContosoUniversityEntities db)
