@@ -15,21 +15,52 @@ namespace IISIConsole
         {
             using (var db = new ContosoUniversityEntities())
             {
-                //db.Configuration.LazyLoadingEnabled = false;
-                //db.Configuration.ProxyCreationEnabled = false;
+                //var c = db.Course.Find(9);
+                //c.Credits = Credits.極品 | Credits.優質;
+                //db.SaveChanges();
 
-                //db.Database.Log = Console.WriteLine;
+                db.Database.Log = Console.WriteLine;
 
-                var one = db.Course.Find(2);
+                //var data = db.Course.SqlQuery("SELECT * FROM dbo.Course WHERE Credits > @p0", Credits.普通);
 
-                one.Title += "1";
-                //one.DateModified = DateTime.Now;
+                var data = db.Database.SqlQuery<MyCourse>(
+                    "SELECT CourseID as ID, Title as Name FROM dbo.Course");
 
-                db.SaveChanges();
+                foreach (var item in data)
+                {
+                    Console.WriteLine(item.ID + "\t" + item.Name);
+                }
+
+                Console.WriteLine(data.Count());
+
+                //Demo延遲載入資料並自定載入邏輯(db);
+                //Demo預先載入資料(db);
+
+
+                //var data = from p in db.Course
+                //           where (p.Credits & (Credits.極品 | Credits.普通)) != Credits.無
+                //           select p;
+
+                //var data = from p in db.Course
+                //           where 
+                //               p.Credits.HasFlag(Credits.極品) ||
+                //               p.Credits.HasFlag(Credits.普通)
+                //           select p;
+
+                //var data = from p in db.Course
+                //           where p.Credits >= Credits.優質
+                //           select p;
+
+                //foreach (var c in data)
+                //{
+                //    Console.WriteLine(c.CourseID + "\t" + c.Title + "\t" + c.Credits);
+                //}
             }
 
-
-
+            //DemoCallSP(db);
+            //DemoConcurrencyCheck(db);
+            //DemoHackDeleteMethod();
+            //DemoEntityStateBetweenDbContext();
             //DemoEntityState(db);
             //DemoManyToMany(db);
             //DemoQueryCount(db);
@@ -37,6 +68,93 @@ namespace IISIConsole
             //DemoUpdate(db);
             //DemoDelete(db);
             //DemoQuery(db);
+        }
+
+        private static void Demo延遲載入資料並自定載入邏輯(ContosoUniversityEntities db)
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+            
+            var data = db.Department;
+            foreach (var item in data)
+            {
+                if (item.IsDeleted == false)
+                {
+                    db.Entry(item).Collection(p => p.Course).Load();
+                }
+                Console.WriteLine(item.Name + "\t課程數" + item.Course.Count());
+            }
+        }
+
+        private static void Demo預先載入資料(ContosoUniversityEntities db)
+        {
+            var data = db.Department.Include(p => p.Course);
+
+            foreach (var item in data)
+            {
+                var a = item.Course.Count(p => p.Credits > Credits.普通);
+            }
+        }
+
+        private static void DemoCallSP(ContosoUniversityEntities db)
+        {
+            var data = db.GetCourses();
+            foreach (var item in data)
+            {
+                Console.WriteLine(item.Title + " " + item.Name);
+            }
+        }
+
+        private static void DemoConcurrencyCheck(ContosoUniversityEntities db)
+        {
+            db.Database.Log = Console.WriteLine;
+            var d = db.Department.Find(1);
+            d.Budget = d.Budget + 1;
+            Console.ReadLine();
+            db.SaveChanges();
+        }
+
+        private static void DemoHackDeleteMethod()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                //var c = db.Course.Find(19);
+                //db.Course.Remove(c);
+
+                db.Entry(new Course() { CourseID = 19 }).State = EntityState.Deleted;
+                db.SaveChanges();
+            }
+        }
+
+        private static void DemoEntityStateBetweenDbContext()
+        {
+            Course c;
+
+            using (var db = new ContosoUniversityEntities())
+            {
+                c = db.Course.Find(2);
+                Console.WriteLine(db.Entry(c).State);
+                c.Credits++;
+                Console.WriteLine(db.Entry(c).State);
+            }
+
+            using (var db = new ContosoUniversityEntities())
+            {
+                Console.WriteLine(db.Entry(c).State);
+                db.Course.Attach(c);
+                Console.WriteLine(db.Entry(c).State);
+                db.Entry(c).State = EntityState.Modified;
+                Console.WriteLine(db.Entry(c).State);
+            }
+        }
+
+        private static void DemoDateModified(ContosoUniversityEntities db)
+        {
+            var one = db.Course.Find(2);
+
+            one.Title += "1";
+            //one.DateModified = DateTime.Now;
+
+            db.SaveChanges();
         }
 
         private static void DemoEntityState(ContosoUniversityEntities db)

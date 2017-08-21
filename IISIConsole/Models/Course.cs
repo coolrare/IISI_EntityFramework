@@ -23,7 +23,7 @@ namespace IISIConsole.Models
     
         public int CourseID { get; set; }
         public string Title { get; set; }
-        public int Credits { get; set; }
+        public Credits Credits { get; set; }
         public int DepartmentID { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime DateCreated { get; set; }

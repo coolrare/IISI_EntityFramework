@@ -73,12 +73,25 @@
     <Compile Include="Models\Course.cs">
       <DependentUpon>ConsotoUniversity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Credits.cs">
+      <DependentUpon>ConsotoUniversity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Department.cs">
+      <DependentUpon>ConsotoUniversity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Department_Insert_Result.cs">
       <DependentUpon>ConsotoUniversity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Enrollment.cs">
       <DependentUpon>ConsotoUniversity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetCourseLite_Result.cs">
+      <DependentUpon>ConsotoUniversity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetCourses_Result.cs">
+      <DependentUpon>ConsotoUniversity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MyCourse.cs" />
     <Compile Include="Models\OfficeAssignment.cs">
       <DependentUpon>ConsotoUniversity.tt</DependentUpon>
     </Compile>
@@ -109,7 +122,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HTMLPage1.html" />
     <Content Include="Models\ConsotoUniversity.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConsotoUniversity.Context.cs</LastGenOutput>
